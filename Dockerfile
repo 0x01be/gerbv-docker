@@ -30,10 +30,9 @@ FROM alpine:3.12.0
 
 COPY --from=builder /opt/gerbv/ /opt/gerbv/
 
-RUN apk add --no-cache --virtual build-dependencies \
+RUN apk add --no-cache --virtual runtime-dependencies \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
     gtk+2.0 \
     xf86-video-dummy \
     xorg-server

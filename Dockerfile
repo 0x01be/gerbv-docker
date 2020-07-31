@@ -26,20 +26,17 @@ RUN ./configure \
 RUN make
 RUN make install
 
-FROM alpine:3.12.0
+FROM 0x01be/xpra
 
-COPY --from=builder /opt/gerbv/ /opt/gerbv/
-
-RUN apk add --no-cache --virtual runtime-dependencies \
+RUN apk add --no-cache --virtual gerbv-runtime-dependencies \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
     gtk+2.0 \
-    xf86-video-dummy \
-    xorg-server
+    ttf-freefont
 
-COPY ./xorg.conf /xorg.conf
-#Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./0.log -config ./xorg.conf :0
-#ENV DISPLAY :0
+COPY --from=builder /opt/gerbv/ /opt/gerbv/
 
 ENV PATH $PATH:/opt/gerbv/bin/
+
+CMD /usr/bin/xpra start --bind-tcp=0.0.0.0:10000 --html=on --start-child=gerbv --exit-with-children --daemon=no --xvfb="/usr/bin/Xvfb +extension  Composite -screen 0 1920x1080x24+32 -nolisten tcp -noreset" --pulseaudio=no --notifications=no --bell=no --mdns=no
 

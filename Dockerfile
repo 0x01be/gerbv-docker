@@ -1,9 +1,6 @@
-FROM alpine:3.12.0 as builder
+FROM 0x01be/alpine:edge as builder
 
-RUN apk add --no-cache --virtual build-dependencies \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+RUN apk add --no-cache --virtual gerbv-build-dependencies \
     git \
     build-base \
     gettext-dev \
@@ -26,11 +23,11 @@ RUN ./configure \
 RUN make
 RUN make install
 
-FROM 0x01be/xpra
+FROM 0x01be/alpine:edge
+
+COPY --from=builder /opt/gerbv/ /opt/gerbv/
 
 RUN apk add --no-cache --virtual gerbv-runtime-dependencies \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
     gtk+2.0 \
     ttf-freefont
 

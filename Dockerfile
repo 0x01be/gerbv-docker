@@ -36,5 +36,8 @@ COPY --from=builder /opt/gerbv/ /opt/gerbv/
 
 ENV PATH $PATH:/opt/gerbv/bin/
 
+VOLUME /workspace
+WORKDIR /workspace
+
 CMD /usr/bin/xpra start --bind-tcp=0.0.0.0:10000 --html=on --start-child=gerbv --exit-with-children --daemon=no --xvfb="/usr/bin/Xvfb +extension  Composite -screen 0 1280x726x24+32 -nolisten tcp -noreset" --pulseaudio=no --notifications=no --bell=no --mdns=no
 

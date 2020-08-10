@@ -1,4 +1,4 @@
-FROM 0x01be/alpine:edge as builder
+FROM alpine as builder
 
 RUN apk add --no-cache --virtual gerbv-build-dependencies \
     git \
@@ -23,7 +23,7 @@ RUN ./configure \
 RUN make
 RUN make install
 
-FROM 0x01be/alpine:edge
+FROM alpine
 
 COPY --from=builder /opt/gerbv/ /opt/gerbv/
 

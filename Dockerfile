@@ -37,5 +37,5 @@ WORKDIR /workspace
 
 ENV FORMAT svg
 
-CMD ls *.g* | xargs -t -I {} /opt/gerbv/bin/gerbv --export=$FORMAT --output={}.$FORMAT {}
+CMD  ls | xargs -t -I {} /opt/gerbv/bin/gerbv --export=$FORMAT --output={}.$FORMAT {}
 

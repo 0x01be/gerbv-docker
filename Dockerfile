@@ -28,13 +28,14 @@ FROM alpine
 COPY --from=builder /opt/gerbv/ /opt/gerbv/
 
 RUN apk add --no-cache --virtual gerbv-runtime-dependencies \
-    gtk+2.0 \
-    xf86-video-dummy \
-    xorg-server
-
-COPY ./xorg.conf /xorg.conf
-#Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./0.log -config ./xorg.conf :0
-#ENV DISPLAY :0
+    gtk+2.0
 
 ENV PATH $PATH:/opt/gerbv/bin/
+
+VOLUME /workspace
+WORKDIR /workspace
+
+ENV FORMAT svg
+
+CMD ls *.g* | xargs -t -I {} /opt/gerbv/bin/gerbv --export=$FORMAT --output={}.$FORMAT {}
 

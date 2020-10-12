@@ -1,4 +1,4 @@
-FROM arm32v6/alpine as builder
+FROM arm32v6/alpine as build
 
 RUN apk add --no-cache --virtual gerbv-build-dependencies \
     git \
@@ -25,7 +25,7 @@ RUN make install
 
 FROM arm32v6/alpine
 
-COPY --from=builder /opt/gerbv/ /opt/gerbv/
+COPY --from=build /opt/gerbv/ /opt/gerbv/
 
 RUN apk add --no-cache --virtual gerbv-runtime-dependencies \
     gtk+2.0

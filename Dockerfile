@@ -25,13 +25,11 @@ RUN make install
 
 FROM 0x01be/xpra
 
-COPY --from=buil /opt/gerbv/ /opt/gerbv/
+COPY --from=build /opt/gerbv/ /opt/gerbv/
 
 RUN apk add --no-cache --virtual gerbv-runtime-dependencies \
     gtk+2.0 \
     ttf-freefont
-
-COPY --from=builder /opt/gerbv/ /opt/gerbv/
 
 ENV PATH $PATH:/opt/gerbv/bin/
 

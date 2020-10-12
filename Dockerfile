@@ -25,7 +25,7 @@ RUN make install
 
 FROM alpine
 
-COPY --from=buil /opt/gerbv/ /opt/gerbv/
+COPY --from=build /opt/gerbv/ /opt/gerbv/
 
 RUN apk add --no-cache --virtual gerbv-runtime-dependencies \
     gtk+2.0

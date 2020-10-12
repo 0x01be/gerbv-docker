@@ -1,4 +1,4 @@
-FROM arm32v6/alpine as builder
+FROM arm32v6/alpine as build
 
 RUN apk add --no-cache --virtual gerbv-build-dependencies \
     git \
@@ -25,13 +25,11 @@ RUN make install
 
 FROM 0x01be/xpra:arm32v6
 
-COPY --from=builder /opt/gerbv/ /opt/gerbv/
+COPY --from=build /opt/gerbv/ /opt/gerbv/
 
 RUN apk add --no-cache --virtual gerbv-runtime-dependencies \
     gtk+2.0 \
     ttf-freefont
-
-COPY --from=builder /opt/gerbv/ /opt/gerbv/
 
 ENV PATH $PATH:/opt/gerbv/bin/
 

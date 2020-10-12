@@ -1,4 +1,4 @@
-FROM alpine as builder
+FROM alpine as build
 
 RUN apk add --no-cache --virtual gerbv-build-dependencies \
     git \
@@ -25,7 +25,7 @@ RUN make install
 
 FROM 0x01be/xpra
 
-COPY --from=builder /opt/gerbv/ /opt/gerbv/
+COPY --from=buil /opt/gerbv/ /opt/gerbv/
 
 RUN apk add --no-cache --virtual gerbv-runtime-dependencies \
     gtk+2.0 \

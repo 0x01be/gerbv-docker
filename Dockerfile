@@ -11,7 +11,7 @@ RUN apk add --no-cache --virtual gerbv-build-dependencies \
     gtk+2.0-dev \
     autoconf
 
-RUN git clone --depth=1 git://git.geda-project.org/gerbv gerbv
+RUN git clone --depth=1 git://git.geda-project.org/gerbv /gerbv
 
 WORKDIR /gerbv
 
@@ -25,15 +25,24 @@ RUN make install
 
 FROM alpine
 
-COPY --from=build /opt/gerbv/ /opt/gerbv/
-
 RUN apk add --no-cache --virtual gerbv-runtime-dependencies \
     gtk+2.0
 
-ENV PATH $PATH:/opt/gerbv/bin/
+COPY --from=build /opt/gerbv/ /opt/gerbv/
 
-VOLUME /workspace
-WORKDIR /workspace
+ENV USER gerbv
+ENV UID 1000
+ENV WORKSPACE /workspace
+
+RUN adduser -D -u ${UID} ${USER}
+
+WORKDIR ${WORKSPACE}
+
+RUN chown -R ${USER}:${USER} ${WORKSPACE}
+
+USER ${USER}
+
+ENV PATH $PATH:/opt/gerbv/bin/
 
 ENV FORMAT svg
 

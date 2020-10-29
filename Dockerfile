@@ -35,5 +35,5 @@ COPY --from=build /opt/gerbv/ /opt/gerbv/
 USER xpra
 
 ENV PATH $PATH:/opt/gerbv/bin/
-ENV COMMAND "gerbv"
+ENV COMMAND gerbv
 

@@ -31,7 +31,6 @@ RUN apk add --no-cache --virtual gerbv-runtime-dependencies \
 COPY --from=build /opt/gerbv/ /opt/gerbv/
 
 USER xpra
-
 ENV PATH $PATH:/opt/gerbv/bin/
 ENV COMMAND gerbv
 

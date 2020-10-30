@@ -25,15 +25,13 @@ RUN make install
 
 FROM 0x01be/xpra:arm32v6
 
-USER root
 RUN apk add --no-cache --virtual gerbv-runtime-dependencies \
-    gtk+2.0 \
-    ttf-freefont
+    gtk+2.0
 
 COPY --from=build /opt/gerbv/ /opt/gerbv/
 
 USER xpra
 
 ENV PATH $PATH:/opt/gerbv/bin/
-ENV COMMAND "gerbv"
+ENV COMMAND gerbv
 

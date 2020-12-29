@@ -1,4 +1,4 @@
-FROM arm32v6/alpine as build
+FROM 0x01be/base:arm32v6 as build
 
 RUN apk add --no-cache --virtual gerbv-build-dependencies \
     git \

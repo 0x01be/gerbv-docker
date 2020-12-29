@@ -1,5 +1,8 @@
 FROM 0x01be/base:arm32v6 as build
 
+WORKDIR /gerbv
+
+ENV REVISION=master
 RUN apk add --no-cache --virtual gerbv-build-dependencies \
     git \
     build-base \
@@ -9,28 +12,24 @@ RUN apk add --no-cache --virtual gerbv-build-dependencies \
     pkgconfig \
     cairo-dev \
     gtk+2.0-dev \
-    autoconf
-
-RUN git clone --depth 1 git://git.geda-project.org/gerbv gerbv
-
-WORKDIR /gerbv
-
-RUN ./autogen.sh
-RUN ./configure \
+    autoconf &&\
+    git clone --depth 1 --branch ${REVISION} git://git.geda-project.org/gerbv /gerbv &&\
+    ./autogen.sh &&\
+    ./configure \
     --prefix=/opt/gerbv/ \
     --enable-unit-mm \
-    --disable-update-desktop-database
-RUN make
+    --disable-update-desktop-database &&\
+     make
 RUN make install
 
 FROM 0x01be/xpra:arm32v6
 
+COPY --from=build /opt/gerbv/ /opt/gerbv/
+
 RUN apk add --no-cache --virtual gerbv-runtime-dependencies \
     gtk+2.0
 
-COPY --from=build /opt/gerbv/ /opt/gerbv/
-
-USER xpra
-ENV PATH $PATH:/opt/gerbv/bin/
-ENV COMMAND gerbv
+USER ${USER}
+ENV PATH=${PATH}:/opt/gerbv/bin/ \
+    COMMAND=gerbv
 
